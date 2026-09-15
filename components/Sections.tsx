@@ -1,178 +1,390 @@
-"use client"
-import { motion } from "framer-motion"
-import { Shield, Network, Cloud, Lock, Server, Terminal } from "lucide-react"
+import Image from "next/image";
+import {
+  ArrowUpRight,
+  Award,
+  ChevronDown,
+  Download,
+  GraduationCap,
+  HeartHandshake,
+  Languages,
+  Mail,
+  MapPin,
+  Network,
+  Shield,
+  Terminal,
+  Lock,
+} from "lucide-react";
+import { Github, Linkedin } from "./BrandIcons";
+import {
+  credentials,
+  experiences,
+  profile,
+  projects,
+  skillGroups,
+} from "@/lib/portfolio";
+import CopyEmail from "./CopyEmail";
 
-const SectionHeader = ({ title, id }: { title: string, id: string }) => (
-  <div className="flex items-center gap-4 mb-8 pt-20" id={id}>
-    <h2 className="text-3xl font-bold text-white font-mono">{title}</h2>
-    <div className="h-px bg-slate-800 flex-1"></div>
-  </div>
-);
+function SectionHeader({
+  number,
+  title,
+  description,
+}: {
+  number: string;
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="section-header">
+      <div>
+        <p className="eyebrow">
+          {number} / {title.toUpperCase()}
+        </p>
+        <h2>{description}</h2>
+      </div>
+      <span className="section-rule" />
+    </div>
+  );
+}
 
 export function About() {
   return (
-    <section className="max-w-5xl mx-auto px-6">
-      <SectionHeader title="./about-me.sh" id="about" />
-      <div className="glass-panel p-8 text-lg text-slate-300 leading-relaxed border-l-4 border-l-primary">
-        <p className="mb-4">
-          Engineering student specializing in Cybersecurity and Cloud Computing at <span className="text-white font-semibold">ENSAM Casablanca</span> (2022 – 2027). 
-          Passionate about network security, SOC automation, SIEM architectures, and cloud technologies.
-        </p>
-        <p>
-          Focused on building practical cybersecurity solutions using Python, OpenSearch, Wazuh, automation pipelines, and modern infrastructure technologies.
-        </p>
+    <section className="shell section" id="about" aria-label="About me">
+      <SectionHeader
+        number="01"
+        title="About"
+        description="A builder with a security mindset."
+      />
+      <div className="about-grid">
+        <div className="about-copy">
+          <p>
+            I’m <strong>Mossaab Ratby</strong>, an engineering student
+            specializing in <strong>Cybersecurity and Cloud Computing</strong>{" "}
+            at ENSAM Casablanca.
+          </p>
+          <p>
+            I enjoy connecting the dots between infrastructure, data, and
+            defense: making cloud risks visible, turning logs into useful
+            signals, and automating security workflows.
+          </p>
+          <p>
+            Through internships and hands-on projects, I’m developing practical
+            experience in cloud security, network monitoring, and security
+            operations.
+          </p>
+          <div className="language-row">
+            <Languages size={18} />
+            <span>English · Full proficiency</span>
+            <span>French · Professional</span>
+          </div>
+        </div>
+        <div className="education-card">
+          <GraduationCap size={25} />
+          <p className="eyebrow">EDUCATION</p>
+          <h3>ENSAM Casablanca</h3>
+          <p>
+            Engineering degree in Cybersecurity
+            <br />
+            &amp; Cloud Computing
+          </p>
+          <span className="education-period">
+            2022 — 2027 · Expected graduation
+          </span>
+          <div className="education-previous">
+            <strong>Physical Sciences Baccalaureate</strong>
+            <span>English option · Lycée Molay Abdellah · 2022</span>
+          </div>
+        </div>
       </div>
     </section>
-  )
+  );
 }
 
 export function Experience() {
-  const experiences = [
-    {
-      title: "Network Security Engineer Intern",
-      company: "Sofretim Casablanca",
-      date: "July 2025 – August 2025",
-      points: [
-        "Developed an automated pipeline for collecting and analyzing network logs using tcpdump and Logstash",
-        "Implemented indexing and dynamic search capabilities using OpenSearch",
-        "Created interactive network topology visualizations for infrastructure monitoring"
-      ]
-    },
-    {
-      title: "Cybersecurity Intern",
-      company: "ShadowFox",
-      date: "June 2025 – July 2025",
-      points: [
-        "Performed reconnaissance and web application testing",
-        "Practiced password cracking and VeraCrypt file decryption",
-        "Executed Metasploit-based reverse shell exploitation in controlled environments"
-      ]
-    }
-  ];
-
   return (
-    <section className="max-w-5xl mx-auto px-6">
-      <SectionHeader title="./experience.log" id="experience" />
-      <div className="space-y-6">
+    <section
+      className="shell section"
+      id="experience"
+      aria-label="Professional experience"
+    >
+      <SectionHeader
+        number="02"
+        title="Experience"
+        description="Learning by solving real problems."
+      />
+      <div className="experience-list">
         {experiences.map((exp, i) => (
-          <motion.div 
-            whileHover={{ scale: 1.01 }}
-            key={i} 
-            className="glass-panel p-6 glow-primary transition-all duration-300 relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
-            <h3 className="text-xl font-bold text-white">{exp.title}</h3>
-            <div className="flex justify-between items-center text-secondary font-mono text-sm mb-4 mt-2">
-              <span>@ {exp.company}</span>
-              <span>{exp.date}</span>
+          <article className="experience-row" key={exp.company}>
+            <div className="experience-side">
+              <span className="experience-period">{exp.period}</span>
+              <a
+                href={exp.website}
+                target="_blank"
+                rel="noreferrer"
+                className={`company-logo ${exp.company === "Sofretim" ? "logo-light" : ""}`}
+                aria-label={`${exp.company} website`}
+              >
+                {exp.logo ? (
+                  <Image
+                    src={exp.logo}
+                    alt={`${exp.company} logo`}
+                    width={140}
+                    height={46}
+                  />
+                ) : (
+                  <span className="company-monogram" aria-hidden="true">
+                    SF
+                  </span>
+                )}
+              </a>
             </div>
-            <ul className="space-y-2 text-slate-400">
-              {exp.points.map((pt, idx) => (
-                <li key={idx} className="flex gap-2 items-start">
-                  <span className="text-primary mt-1">▹</span> {pt}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
+            <div className="experience-content">
+              <div className="experience-heading">
+                <div>
+                  <p className="company-name">
+                    {exp.company}
+                    {exp.location && <span> / {exp.location}</span>}
+                  </p>
+                  <h3>{exp.role}</h3>
+                </div>
+                {i === 0 && (
+                  <span className="small-label">LATEST EXPERIENCE</span>
+                )}
+              </div>
+              <ul>
+                {exp.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+              <div className="tags">
+                {exp.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+            </div>
+          </article>
         ))}
       </div>
     </section>
-  )
+  );
 }
 
 export function Projects() {
-  const projects = [
-    {
-      title: "SOC Copilot",
-      desc: "AI-powered SOC automation platform integrating Wazuh, LangGraph, Mistral AI, Neo4j, and RAG pipelines.",
-      icon: <Terminal className="text-primary" />
-    },
-    {
-      title: "WAZUH-ML UEBA",
-      desc: "Behavioral analysis platform using Wazuh and Machine Learning for anomaly detection across 200k+ user and system logs.",
-      icon: <Shield className="text-secondary" />
-    },
-    {
-      title: "Web Application Firewall",
-      desc: "Comparison and implementation of custom vs open-source WAF architectures.",
-      icon: <Lock className="text-primary" />
-    },
-    {
-      title: "Python Network Sniffer",
-      desc: "Packet sniffer built in Python for detailed network traffic analysis and monitoring.",
-      icon: <Network className="text-secondary" />
-    }
-  ];
-
+  const icons = [Terminal, Shield, Lock, Network];
   return (
-    <section className="max-w-5xl mx-auto px-6">
-      <SectionHeader title="./projects.exe" id="projects" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {projects.map((proj, i) => (
-          <motion.div 
-            whileHover={{ y: -5 }}
-            key={i} 
-            className="glass-panel p-6 hover:border-slate-600 transition-all duration-300 group cursor-pointer"
-          >
-            <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-slate-800/50 rounded-lg group-hover:bg-slate-800 transition-colors">
-                {proj.icon}
+    <section
+      className="shell section"
+      id="projects"
+      aria-label="Selected projects"
+    >
+      <SectionHeader
+        number="03"
+        title="Selected projects"
+        description="Ideas turned into working tools."
+      />
+      <div className="project-grid">
+        {projects.map((project, i) => {
+          const Icon = icons[i];
+          return (
+            <article className="project-card" key={project.title}>
+              <div className="project-top">
+                <span className="project-icon">
+                  <Icon size={23} />
+                </span>
+                <span className="project-number">0{i + 1}</span>
               </div>
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">{proj.title}</h3>
-            <p className="text-slate-400 text-sm leading-relaxed">{proj.desc}</p>
-          </motion.div>
-        ))}
+              <p className="eyebrow project-category">{project.category}</p>
+              <h3>{project.title}</h3>
+              <p className="project-summary">{project.summary}</p>
+              <div className="tags">
+                {project.stack.map((item) => (
+                  <span key={item}>{item}</span>
+                ))}
+              </div>
+              <details className="project-details">
+                <summary>
+                  Project overview <ChevronDown size={16} />
+                </summary>
+                <div>
+                  <p>{project.description}</p>
+                  <p>
+                    <strong>Focus:</strong> {project.focus}
+                  </p>
+                </div>
+              </details>
+              <div className="project-footer">
+                <span>{project.highlight}</span>
+                {project.repository ? (
+                  <a
+                    href={project.repository}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`View ${project.title} on GitHub`}
+                  >
+                    Code <ArrowUpRight size={16} />
+                  </a>
+                ) : (
+                  <a
+                    href={`mailto:${profile.email}?subject=${encodeURIComponent("Tell me about Wazuh-ML UEBA")}`}
+                  >
+                    Ask about it <ArrowUpRight size={16} />
+                  </a>
+                )}
+              </div>
+            </article>
+          );
+        })}
       </div>
+      <a
+        href={profile.github}
+        target="_blank"
+        rel="noreferrer"
+        className="text-link all-projects"
+      >
+        <Github size={17} /> More on GitHub <ArrowUpRight size={16} />
+      </a>
     </section>
-  )
+  );
 }
 
 export function SkillsAndCerts() {
-  const certs = ["Fortinet FCP-SASE", "FortiGate 7.4 Administrator", "FortiSASE & SD-WAN 7.6 Core", "Google Cybersecurity Professional", "Cisco Cybersecurity Essentials", "AWS Academy Cloud Foundations"];
-  const skills = ["SIEM", "Log Analysis", "Network Security", "Wazuh", "OpenSearch", "Python", "Virtualization", "Firewall Configuration"];
-
   return (
-    <section className="max-w-5xl mx-auto px-6 pb-32">
-      <SectionHeader title="./capabilities.json" id="skills" />
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <div>
-          <h3 className="text-lg font-mono text-secondary mb-4 flex items-center gap-2">
-            <Server size={18} /> "Certifications"
-          </h3>
-          <div className="flex flex-col gap-3">
-            {certs.map((cert, i) => (
-              <div key={i} className="glass-panel px-4 py-3 text-sm text-slate-300 border-l-2 border-l-secondary">
-                {cert}
+    <>
+      <section
+        className="shell section"
+        id="certifications"
+        aria-label="Certifications and skills"
+      >
+        <SectionHeader
+          number="04"
+          title="Credentials & skills"
+          description="The knowledge behind the work."
+        />
+        <div className="capabilities-grid">
+          <div className="credentials">
+            <h3 className="column-title">
+              <Award size={18} /> Certifications &amp; training
+            </h3>
+            {credentials.map((cert) => (
+              <article
+                key={cert.issuer}
+                className={`credential-card ${cert.featured ? "credential-featured" : ""}`}
+              >
+                <div
+                  className={`credential-logo ${cert.featured ? "badge-logo" : ""}`}
+                >
+                  <Image
+                    src={cert.logo}
+                    alt={`${cert.issuer} ${cert.featured ? "Cloud Practitioner badge" : "logo"}`}
+                    width={64}
+                    height={64}
+                  />
+                </div>
+                <div>
+                  <p className="credential-issuer">{cert.issuer}</p>
+                  <h4>{cert.title}</h4>
+                  <p className="credential-detail">{cert.detail}</p>
+                </div>
+              </article>
+            ))}
+          </div>
+          <div className="skill-groups" id="skills">
+            <h3 className="column-title">
+              <Terminal size={18} /> Technical toolkit
+            </h3>
+            {skillGroups.map((group) => (
+              <div className="skill-group" key={group.title}>
+                <h4>{group.title}</h4>
+                <div className="tags skill-tags">
+                  {group.skills.map((skill) => (
+                    <span key={skill}>{skill}</span>
+                  ))}
+                </div>
               </div>
             ))}
+            <div className="working-style">
+              <p className="eyebrow">HOW I WORK</p>
+              <p>Teamwork. Responsibility. Organization.</p>
+            </div>
           </div>
         </div>
-
+      </section>
+      <section
+        className="shell community-section"
+        aria-labelledby="community-heading"
+      >
         <div>
-          <h3 className="text-lg font-mono text-primary mb-4 flex items-center gap-2">
-            <Cloud size={18} /> "Core_Skills"
-          </h3>
-          <div className="flex flex-wrap gap-3">
-            {skills.map((skill, i) => (
-              <span key={i} className="glass-panel px-4 py-2 text-sm text-primary bg-primary/5 hover:bg-primary/10 cursor-default transition-colors">
-                {skill}
-              </span>
-            ))}
+          <HeartHandshake size={24} />
+          <h2 id="community-heading">Beyond the technical work</h2>
+          <p>Taking responsibility and contributing to my community.</p>
+        </div>
+        <div className="community-roles">
+          <div>
+            <h3>Treasurer / Vice President</h3>
+            <p>Sawaid Al Amal · ENSAM Casablanca</p>
+            <span>September 2024 — Present</span>
           </div>
+          <div>
+            <h3>Motatawi3 program · 2nd edition</h3>
+            <p>Ministry of Youth, Culture and Communication</p>
+            <span>July — August 2024</span>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
 
-          <div className="mt-8">
-             <h3 className="text-lg font-mono text-slate-400 mb-4 flex items-center gap-2">
-              <Network size={18} /> "Leadership_&_Volunteer"
-            </h3>
-            <div className="glass-panel p-4 text-sm text-slate-400">
-              <p className="mb-2"><strong className="text-white">Treasurer / Vice President</strong> - Sawaid Al Amal ENSAM Casablanca (2024–Present)</p>
-              <p><strong className="text-white">Motatawi3 Participant</strong> - MJCC Ministry of Youth</p>
-            </div>
+export function Contact() {
+  return (
+    <section
+      className="shell section contact-section"
+      id="contact"
+      aria-labelledby="contact-heading"
+    >
+      <div className="contact-card">
+        <div>
+          <p className="eyebrow">05 / LET’S CONNECT</p>
+          <h2 id="contact-heading">
+            Have a security challenge?
+            <br />
+            <span>Let’s talk.</span>
+          </h2>
+          <p>
+            I’m seeking an end-of-studies (PFE) internship starting in{" "}
+            <strong>January 2027</strong>, with a focus on cybersecurity, cloud
+            security, or SOC automation.
+          </p>
+          <a className="contact-email" href={`mailto:${profile.email}`}>
+            {profile.email}
+            <ArrowUpRight size={24} />
+          </a>
+          <CopyEmail email={profile.email} />
+        </div>
+        <div className="contact-aside">
+          <span>
+            <MapPin size={17} /> {profile.location}
+          </span>
+          <a
+            className="button button-primary"
+            href={`mailto:${profile.email}?subject=${encodeURIComponent("PFE internship opportunity — January 2027")}`}
+          >
+            <Mail size={17} /> Get in touch <ArrowUpRight size={17} />
+          </a>
+          <a className="button button-secondary" href={profile.resume} download>
+            <Download size={17} /> Download CV
+          </a>
+          <div className="contact-socials">
+            <a href={profile.linkedin} target="_blank" rel="noreferrer">
+              <Linkedin size={17} />
+              LinkedIn
+            </a>
+            <a href={profile.github} target="_blank" rel="noreferrer">
+              <Github size={17} />
+              GitHub
+            </a>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

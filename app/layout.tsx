@@ -2,13 +2,42 @@ import type { Metadata } from "next";
 import { Inter, Fira_Code } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
-const firaCode = Fira_Code({ subsets: ["latin"], variable: '--font-fira-code' });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const firaCode = Fira_Code({
+  subsets: ["latin"],
+  variable: "--font-fira-code",
+});
+
+// Vercel supplies these domains; local development needs no configuration.
+const deploymentDomain =
+  process.env.VERCEL_ENV === "preview"
+    ? process.env.VERCEL_URL
+    : process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL;
 
 export const metadata: Metadata = {
-  title: "Mossaab Ratby | Cybersecurity Engineer",
-  description: "Portfolio of Mossaab Ratby - Cybersecurity & Cloud Computing Engineering Student. Exploring SIEM, Network Defense, and Cloud Infrastructure.",
-  keywords: ["Cybersecurity", "SOC", "SIEM", "Next.js", "Portfolio", "Cloud Computing"],
+  metadataBase: new URL(
+    deploymentDomain ? `https://${deploymentDomain}` : "http://localhost:3000",
+  ),
+  title: "Mossaab Ratby | Cybersecurity & Cloud Computing",
+  description:
+    "Cybersecurity and Cloud Computing engineering student at ENSAM Casablanca. AWS Certified Cloud Practitioner, building cloud security and SOC automation tools. Seeking a PFE internship in January 2027.",
+  keywords: [
+    "Mossaab Ratby",
+    "Cybersecurity",
+    "Cloud Security",
+    "SOC",
+    "AWS",
+    "ENSAM Casablanca",
+    "PFE Internship",
+  ],
+  openGraph: {
+    title: "Mossaab Ratby | Cybersecurity & Cloud Computing",
+    description:
+      "Cloud security, threat detection, and SOC automation. ENSAM Casablanca · PFE internship from January 2027.",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({
@@ -17,11 +46,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
-      <body className={`${inter.variable} ${firaCode.variable} relative min-h-screen selection:bg-primary selection:text-black`}>
-        {/* Background Grid Elements */}
-        <div className="fixed inset-0 z-[-1] bg-grid-pattern opacity-50"></div>
-        <div className="fixed inset-0 z-[-2] bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-slate-900 via-background to-background"></div>
+    <html lang="en">
+      <body className={`${inter.variable} ${firaCode.variable}`}>
         {children}
       </body>
     </html>
